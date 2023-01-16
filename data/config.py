@@ -1,9 +1,10 @@
-import configparser
+import os
+from dotenv import load_dotenv
 
-config = configparser.ConfigParser()
-config.read("settings.ini")
-BOT_TOKEN = config["settings"]["token"]
-admins = config["settings"]["admin_id"]
+load_dotenv()
+telegram_token = os.getenv('TELEGRAM_TOKEN')
+admins = os.getenv('ADMINS')
+screenshot_path = os.getenv('SCREEN_PATH')
 
 if "," in admins:
     admins = admins.split(",")
