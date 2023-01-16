@@ -1,21 +1,17 @@
 from typing import Tuple
 
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
 import logging
 
 logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
 
 async def take_screenshot(url: str) -> tuple[bool, str]:
-    options = webdriver.ChromeOptions()
-    # options.add_argument("--headless")
+    options = webdriver.FirefoxOptions()
+    options.add_argument("--headless")
     options.add_argument("--start-maximized")
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),
-        options=options,
-    )
+    options.add_argument('executable_path=drivers/geckodriver.exe')
+    driver = webdriver.Firefox(options=options)
     if 'https://' not in url:
         url = 'https://' + url
     try:
@@ -27,4 +23,5 @@ async def take_screenshot(url: str) -> tuple[bool, str]:
         logging.error(e)
         status = False
         name = ''
+    driver.close()
     return status, name
